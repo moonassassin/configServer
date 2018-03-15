@@ -1,0 +1,42 @@
+server:
+  port: @server.port@
+  tomcat: 
+    basedir: .
+    accesslog:
+      enabled: true
+      pattern: "%t %a \"%r\" %s (%D ms)"
+  
+spring:
+  application:
+    name: configServer
+  profiles.active: native # 使用本项目中文件作为公共配置文件
+  cloud:
+    loadbalancer.retry.enabled: true
+    config:
+#      server:
+#        git:
+#          uri: https://github.com/yjmyzz/spring-cloud-config-repository # git仓库
+#          username: *****
+#          password: *****
+
+eureka:
+  instance:
+    hostname: 127.0.0.1
+    instanceId: ${spring.application.name}:${random.int}
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: @service.url@
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 300000
+
+endpoints:
+  cors:
+    allowed-origins: "*"
+    allowed-methods: GET,POST
+
+spring.cloud.loadbalancer.retry.enabled: true
+
+management:
+  security:
+    enabled: false
